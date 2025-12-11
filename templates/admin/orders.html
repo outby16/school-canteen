@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Управление заказами</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Клиент</th>
+            <th>Дата</th>
+            <th>Сумма</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>#{{ order.id }}</td>
+            <td>Пользователь #{{ order.user_id }}</td>
+            <td>{{ order.order_date.strftime('%d.%m.%Y %H:%M') }}</td>
+            <td>{{ order.total_price }} ₽</td>
+            <td>
+                <select class="form-select status-select" data-order-id="{{ order.id }}">
+                    <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Ожидает</option>
+                    <option value="preparing" {% if order.status == 'preparing' %}selected{% endif %}>Готовится</option>
+                    <option value="ready" {% if order.status == 'ready' %}selected{% endif %}>Готов</option>
+                </select>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+$(document).on('change', '.status-select', function() {
+    const orderId = $(this).data('order-id');
+    const newStatus = $(this).val();
+    
+    $.post('/admin/update_order_status', {
+        order_id: orderId,
+        status: newStatus
+    });
+});
+</script>
+{% endblock %}

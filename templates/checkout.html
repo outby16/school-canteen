@@ -1,0 +1,22 @@
+<!-- Оформление заказа -->
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Оформление заказа</h1>
+
+{% if session.user_id %}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Подтверждение заказа</h5>
+        <p>Ваш заказ будет приготовлен в течение 30 минут.</p>
+        <form method="post">
+            <button type="submit" class="btn btn-primary btn-lg">Подтвердить заказ</button>
+        </form>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-warning">
+    <p>Для оформления заказа необходимо <a href="/login">войти в систему</a>.</p>
+</div>
+{% endif %}
+{% endblock %}

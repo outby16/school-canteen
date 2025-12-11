@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="jumbotron bg-light p-5 rounded">
+    <h1 class="display-4">Добро пожаловать в школьную столовую!</h1>
+    <p class="lead">Заказывайте вкусные и полезные блюда онлайн. Быстро, удобно, без очередей!</p>
+    <a class="btn btn-primary btn-lg" href="/menu">Посмотреть меню</a>
+</div>
+
+<h2>Популярные блюда</h2>
+<div class="row">
+    {% for item in featured_items %}
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ item.name }}</h5>
+                <p class="card-text">{{ item.description }}</p>
+                <p class="h5">{{ item.price }} ₽</p>
+                <form method="post" action="/add_to_cart">
+                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                    <button type="submit" class="btn btn-primary btn-sm">В корзину</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

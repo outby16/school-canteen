@@ -1,0 +1,48 @@
+<!-- Мои заказы -->
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Мои заказы</h1>
+
+{% if orders %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Дата</th>
+            <th>Товары</th>
+            <th>Сумма</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>#{{ order.id }}</td>
+            <td>{{ order.order_date.strftime('%d.%m.%Y %H:%M') }}</td>
+            <td>
+                {% for item in order.items_list %}
+                {{ item.quantity }}× {{ item.name }}<br>
+                {% endfor %}
+            </td>
+            <td>{{ order.total_price }} ₽</td>
+            <td>
+                {% if order.status == 'pending' %}
+                <span class="badge bg-warning">Ожидает</span>
+                {% elif order.status == 'preparing' %}
+                <span class="badge bg-info">Готовится</span>
+                {% elif order.status == 'ready' %}
+                <span class="badge bg-success">Готов</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="text-center py-5">
+    <h3>Заказов нет</h3>
+    <a href="/menu" class="btn btn-primary">Сделать заказ</a>
+</div>
+{% endif %}
+{% endblock %}
